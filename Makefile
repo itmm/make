@@ -2,13 +2,10 @@ EXE = make
 SRCs = make.cpp
 OBJs = make.o
 MDs = index.md stack.md
-HX_RUN = hx-run
 
 CXX_ = $(CXX) $(CPPFLAGS) $(CXXFLAGS)
 
 all: $(EXE)
-
-$(SRCs): $(HX_RUN)
 
 %.o: %.cpp
 	@echo "C++ $@"
@@ -18,9 +15,8 @@ $(EXE): $(OBJs)
 	@echo "LD $@"
 	@$(CXX_) -o $@ $^
 
-$(HX_RUN): $(MDs)
-	@echo "HX"
-	@date >$(HX_RUN)
+$(SRCs): $(MDs)
+	@echo "HX $@"
 	@if which hx >/dev/null; then \
 		hx; \
 	else echo "!! NO HX"; fi
