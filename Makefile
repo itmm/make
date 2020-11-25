@@ -1,7 +1,7 @@
 EXE = make
 SRCs = make.cpp
 OBJs = make.o
-MDs = index.md
+MDs = index.md stack.md
 HX_RUN = hx-run
 
 CXX_ = $(CXX) $(CPPFLAGS) $(CXXFLAGS)
@@ -21,7 +21,9 @@ $(EXE): $(OBJs)
 $(HX_RUN): $(MDs)
 	@echo "HX"
 	@date >$(HX_RUN)
-	@if which hx >/dev/null; then hx; else echo "!! NO HX"; fi
+	@if which hx >/dev/null; then \
+		hx; \
+	else echo "!! NO HX"; fi
 
 clean:
 	@echo "RM"

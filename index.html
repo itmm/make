@@ -15,12 +15,77 @@
 <div class="page"><div class="slide"><div class="slide-nr">2</div>
 <code>
 <span class="macro">@Def(<span class="name">file: make.cpp</span>)</span><br/>
-<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
-<br/>
+<span class="in1"></span><span class="macro">@put(<span class="name">globals</span>)</span><br/>
 <span class="in1"></span><span class="type">int</span> <span class="fn">main</span>(<span class="type">int</span> <span class="var">argc</span>, <span class="type">const</span> <span class="type">char</span> *<span class="var">argv</span>[]) {<br/>
-<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="str">"Hello\n"</span>;<br/>
+<span class="in2"></span><span class="macro">@put(<span class="name">main</span>)</span><br/>
 <span class="in1"></span>}<br/>
 <span class="macro">@End(<span class="name">file: make.cpp</span>)</span><br/>
+</code></div>
+<ul></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">3</div>
+<code>
+<span class="macro">@inc(<span class="name"><a href="stack.html">stack.md</a></span>)</span><br/>
+</code></div>
+<ul></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">4</div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="keyword">#include</span> &lt;<span class="var">iostream</span>&gt;<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">5</div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">bool</span> <span class="fn">continues_to_next_line</span>(<span class="type">const</span> <span class="type">std</span>::<span class="type">string</span> &amp;<span class="var">line</span>) {<br/>
+<span class="in2"></span><span class="keyword">return</span> ! <span class="var">line</span>.<span class="fn">empty</span>() &amp;&amp; <span class="var">line</span>.<span class="fn">back</span>() == <span class="str">'\\'</span>;<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">6</div>
+<code>
+<span class="macro">@add(<span class="name">globals</span>)</span><br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="fn">merge_lines</span>(<span class="type">std</span>::<span class="type">string</span> <span class="var">first</span>, <span class="type">std</span>::<span class="type">string</span> <span class="var">next</span>) {<br/>
+<span class="in2"></span><span class="type">int</span> <span class="var">non_space</span> { <span class="num">0</span> };<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="var">non_space</span> &lt; <span class="var">next</span>.<span class="fn">size</span>() &amp;&amp; <span class="var">next</span>[<span class="var">non_space</span>] == <span class="str">'\t'</span>) {<br/>
+<span class="in3"></span>++<span class="var">non_space</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="keyword">return</span><br/>
+<span class="in3"></span><span class="var">first</span>.<span class="fn">substr</span>(<span class="num">0</span>, <span class="var">first</span>.<span class="fn">size</span>() - <span class="num">1</span>) +<br/>
+<span class="in3"></span><span class="var">next</span>.<span class="fn">substr</span>(<span class="var">non_space</span>);<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">globals</span>)</span><br/>
+</code></div>
+<ul></ul>
+</div>
+<div class="page"><div class="slide"><div class="slide-nr">7</div>
+<code>
+<span class="macro">@def(<span class="name">main</span>)</span><br/>
+<span class="in1"></span><span class="type">File_Stack</span> <span class="var">makefiles</span>;<br/>
+<span class="in1"></span><span class="var">makefiles</span>.<span class="fn">push</span>(<span class="str">"Makefile"</span>);<br/>
+<span class="in1"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">line</span>;<br/>
+<span class="in1"></span><span class="keyword">try</span> { <span class="keyword">for</span> (;;) {<br/>
+<span class="in2"></span><span class="var">makefiles</span>.<span class="fn">get_line</span>(<span class="var">line</span>);<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="var">line</span>.<span class="fn">empty</span>()) { <span class="keyword">continue</span>; }<br/>
+<span class="in2"></span><span class="keyword">while</span> (<span class="fn">continues_to_next_line</span>(<span class="var">line</span>)) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="type">string</span> <span class="var">next</span>;<br/>
+<span class="in3"></span><span class="var">makefiles</span>.<span class="fn">get_line</span>(<span class="var">next</span>);<br/>
+<span class="in3"></span><span class="var">line</span> = <span class="fn">merge_lines</span>(<span class="var">line</span>, <span class="var">next</span>);<br/>
+<span class="in2"></span>}<br/>
+<span class="in2"></span><span class="type">std</span>::<span class="var">cout</span> &lt;&lt; <span class="var">line</span> &lt;&lt; <span class="str">"\n"</span>;<br/>
+<span class="in1"></span>} } <span class="keyword">catch</span> (<br/>
+<span class="in2"></span><span class="type">const</span> <span class="type">File_Stack</span>::<span class="type">End_Reached</span> &amp;<br/>
+<span class="in1"></span>) {<br/>
+<span class="in2"></span><span class="keyword">if</span> (<span class="fn">continues_to_next_line</span>(<span class="var">line</span>)) {<br/>
+<span class="in3"></span><span class="type">std</span>::<span class="var">cerr</span> &lt;&lt; <span class="var">makefiles</span> &lt;&lt; <span class="str">" ends with continuing line\n"</span>;<br/>
+<span class="in2"></span>}<br/>
+<span class="in1"></span>}<br/>
+<span class="macro">@end(<span class="name">main</span>)</span><br/>
 </code></div>
 <ul></ul>
 </div>
