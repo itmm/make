@@ -9,7 +9,7 @@ all: $(EXE)
 
 %.o: %.cpp
 	@echo "C++ $@"
-	@$(CXX_) -c $< -o $@
+	@$(CXX_) -c $*.cpp -o $@
 
 $(EXE): $(OBJs)
 	@echo "LD $@"
